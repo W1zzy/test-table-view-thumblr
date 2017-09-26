@@ -53,11 +53,11 @@ class NetworkManager {
         if let image = cache.object(forKey: url.absoluteString as NSString) {
             onSuccess(image)
         } else {
-            let task = session.downloadTask(with: url, completionHandler: { (location, response, error) in
+            let task = session.downloadTask(with: url, completionHandler: { [weak self] (location, response, error) in
                 if let loc = location {
                     if let data = try? Data(contentsOf: loc) {
                         let img: UIImage! = UIImage(data: data)
-                        self.cache.setObject(img, forKey: url.absoluteString as NSString)
+                        self?.cache.setObject(img, forKey: url.absoluteString as NSString)
                         
                         onSuccess(img)
                     }
